@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      .completed {
+        text-decoration: line-through;
+      }
+    </style>
+    <script>
+      const data = {
+        todos: [
+          { text: "Write a UI", status: "completed" },
+          { text: "Bake cookies", status: "active" },
+          { text: "Take over the world", status: "active" },
+        ],
+        showStatus: "all",
+      };
+
+      function addNewItem() {
+        const id = data.todos.length + 1;
+        const newItem = {
+          text: document.getElementById("newTodo").value,
+          status: "active",
+        };
+        data.todos.push(newItem);
+        addItemToDom(newItem, id);
+      }
+
+      function addItemToDom(item, id) {
+        const domElement = document.createElement("div");
+        domElement.setAttribute("id", id);
+        domElement.classList.add(item.status);
+        domElement.innerText = item.text;
+        document.getElementById("todos").appendChild(domElement);
+      }
+
+      function handleChange() {
+        data.showStatus = document.getElementById("selector").value;
+        let el = document.getElementById("todos");
+        while (el.hasChildNodes()) {
+          el.removeChild(el.firstChild);
+        }
+        if (data.showStatus !== "all") {
+          data.todos
+            .filter((i) => i.status === data.showStatus)
+            .forEach(addItemToDom);
+        } else {
+          data.todos.forEach(addItemToDom);
+        }
+      }
+      window.onload = () => {
+        data.todos.forEach(addItemToDom);
+      };
+    </script>
+  </head>
+  <body>
+    <select id="selector" onchange="handleChange()">
+      <option selected value="all">All</option>
+      <option value="completed">Completed</option>
+      <option value="active">Active</option>
+    </select>
+    <hr />
+    <div id="todos"></div>
+    <hr />
+    <input id="newTodo" type="text" />
+    <button onClick="addNewItem()">Add</button>
+  </body>
+</html>
