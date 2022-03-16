@@ -15,10 +15,6 @@ class App extends React.Component {
     };
   }
 
-  handleChange(e) {
-    this.setState({ showStatus: e.target.value });
-  }
-
   addNewItem() {
     const { todos, currentItem } = this.state;
     this.setState({
@@ -31,25 +27,21 @@ class App extends React.Component {
   }
 
   render() {
-    const { todos, showStatus, currentItem } = this.state;
+    const { todos, currentItem } = this.state;
     return (
       <div>
         <select id="selector" onChange={(e) => this.handleChange(e)}>
-          <option value="completed">Completed</option>
-          <option value="active">Active</option>
-          <option default value="all">
+          <option selected value="all">
             All
           </option>
+          <option value="completed">Completed</option>
+          <option value="active">Active</option>
         </select>
         <hr />
         <div id="todos">
-          {todos
-            .filter(({ status }) =>
-              showStatus === "all" ? true : status === showStatus
-            )
-            .map(({ text, status }) => (
-              <div className={status}>{text}</div>
-            ))}
+          {todos.map(({ text, status }) => (
+            <div className={status}>{text}</div>
+          ))}
         </div>
         <hr />
         <input
